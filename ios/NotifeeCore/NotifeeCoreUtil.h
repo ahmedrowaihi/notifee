@@ -35,6 +35,7 @@ static NSString *kNotifeeCoreTimeUnitDays = @"DAYS";
 typedef NS_ENUM(NSInteger, NotifeeCoreTriggerType) {
   NotifeeCoreTriggerTypeTimestamp = 0,
   NotifeeCoreTriggerTypeInterval = 1
+  NotifeeCoreTriggerCalendar = 2
 };
 
 // Enum representing repeat frequency for TimestampTrigger

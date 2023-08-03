@@ -311,6 +311,8 @@
     trigger = [self timestampTriggerFromDictionary:triggerDict];
   } else if (triggerType == NotifeeCoreTriggerTypeInterval) {
     trigger = [self intervalTriggerFromDictionary:triggerDict];
+  } else if (triggerType == NotifeeCoreTriggerCalendar){
+    trigger = [self calendarTriggerFromDictionary:triggerDict];
   } else {
     NSLog(@"NotifeeCore: Failed to parse trigger with unknown trigger type: %ld",
           (long)triggerType);
@@ -401,6 +403,32 @@
   }
 
   return [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:intervalInSeconds repeats:true];
+}
+
+/**
+ * Returns an UNNotificationTrigger from NSDictionary representing an
+ * CalendarTrigger
+ *
+ * @param triggerDict NSDictionary
+ */
++ (UNNotificationTrigger *)calendarTriggerFromDictionary:(NSDictionary *)triggerDict {
+  NSInteger year = [triggerDict[@"year"] integerValue];
+  NSInteger month = [triggerDict[@"month"] integerValue];
+  NSInteger day = [triggerDict[@"day"] integerValue];
+  NSInteger hour = [triggerDict[@"hour"] integerValue];
+  NSInteger minute = [triggerDict[@"minute"] integerValue];
+  NSInteger second = [triggerDict[@"second"] integerValue];
+  bool repeatsBool = [triggerDict[@"repeats"] boolValue];
+
+  NSDateComponents *components = [[NSDateComponents alloc] init];
+  [components setYear:year];
+  [components setMonth:month];
+  [components setDay:day];
+  [components setHour:hour];
+  [components setMinute:minute];
+  [components setSecond:second];
+
+  return [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:components repeats:repeatsBool];
 }
 
 + (NSMutableArray<NSNumber *> *)intentIdentifiersFromStringArray:
