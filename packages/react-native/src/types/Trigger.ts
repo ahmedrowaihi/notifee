@@ -124,6 +124,51 @@ export enum TimeUnit {
 }
 
 /**
+ * Interface for building a trigger with a calendar date.
+ *
+ * View the [Triggers](/react-native/docs/triggers) documentation to learn more.
+ */
+export interface CalendarTrigger {
+  /**
+   * Constant enum value used to identify the trigger type.
+   */
+  type: TriggerType.CALENDAR;
+  /**
+   * The year of the date when the notification should first be shown.
+   */
+  year: number;
+  /**
+   * The month of the date when the notification should first be shown.
+   * Must be a value between 1 and 12.
+   */
+  month: number;
+  /**
+   * The day of the date when the notification should first be shown.
+   * Must be a value between 1 and 31.
+   */
+  day: number;
+  /**
+   * The hour of the date when the notification should first be shown.
+   */
+  hour: number;
+  /**
+   * The minute of the date when the notification should first be shown.
+   * Must be a value between 0 and 59.
+   */
+  minute: number;
+  /**
+   * The second of the date when the notification should first be shown.
+   * Must be a value between 0 and 59.
+   */
+  second: number;
+  /**
+   * The trigger repeats.
+   * If unset, the notification will only be displayed once.
+   */
+  repeats?: boolean;
+}
+
+/**
  * Available Trigger Types.
  *
  * View the [Triggers](/react-native/docs/triggers) documentation to learn more with example usage.
@@ -131,6 +176,7 @@ export enum TimeUnit {
 export enum TriggerType {
   TIMESTAMP = 0,
   INTERVAL = 1,
+  CALENDAR = 2,
 }
 
-export declare type Trigger = TimestampTrigger | IntervalTrigger;
+export declare type Trigger = TimestampTrigger | IntervalTrigger | CalendarTrigger;

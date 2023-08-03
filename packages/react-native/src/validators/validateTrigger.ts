@@ -18,6 +18,7 @@ import {
   IntervalTrigger,
   TriggerType,
   TimestampTriggerAlarmManager,
+  CalendarTrigger,
   AlarmType,
 } from '../types/Trigger';
 
@@ -47,6 +48,8 @@ export default function validateTrigger(trigger: Trigger): Trigger {
       return validateTimestampTrigger(trigger);
     case TriggerType.INTERVAL:
       return validateIntervalTrigger(trigger);
+    case TriggerType.CALENDAR:
+      return validateCalendarTrigger(trigger);
     default:
       throw new Error('Unknown trigger type');
   }
@@ -136,6 +139,61 @@ function validateIntervalTrigger(trigger: IntervalTrigger): IntervalTrigger {
 
   if (!isMinimumInterval(trigger.interval, out.timeUnit)) {
     throw new Error("'trigger.interval' expected to be at least 15 minutes.");
+  }
+
+  return out;
+}
+
+function validateCalendarTrigger(trigger: CalendarTrigger): CalendarTrigger {
+  const out: CalendarTrigger = {
+    type: TriggerType.CALENDAR,
+    year: trigger.year,
+    month: trigger.month,
+    day: trigger.day,
+    hour: trigger.hour,
+    minute: trigger.minute,
+    second: trigger.second,
+    repeats: trigger.repeats,
+  };
+
+  if (!isNumber(trigger.year)) {
+    throw new Error("'trigger.year' expected a number value.");
+  }
+  if (!isNumber(trigger.month)) {
+    throw new Error("'trigger.month' expected a number value.");
+  }
+  if (!isNumber(trigger.day)) {
+    throw new Error("'trigger.day' expected a number value.");
+  }
+  if (!isNumber(trigger.hour)) {
+    throw new Error("'trigger.hour' expected a number value.");
+  }
+  if (!isNumber(trigger.minute)) {
+    throw new Error("'trigger.minute' expected a number value.");
+  }
+  if (!isNumber(trigger.second)) {
+    throw new Error("'trigger.second' expected a number value.");
+  }
+
+  if (trigger.month < 1 || trigger.month > 12) {
+    throw new Error("'trigger.month' expected a value between 1 and 12.");
+  }
+  if (trigger.day < 1 || trigger.day > 31) {
+    throw new Error("'trigger.day' expected a value between 1 and 31.");
+  }
+  if (trigger.hour < 0 || trigger.hour > 23) {
+    throw new Error("'trigger.hour' expected a value between 0 and 23.");
+  }
+  if (trigger.minute < 0 || trigger.minute > 59) {
+    throw new Error("'trigger.minute' expected a value between 0 and 59.");
+  }
+  if (trigger.second < 0 || trigger.second > 59) {
+    throw new Error("'trigger.second' expected a value between 0 and 59.");
+  }
+
+  if (objectHasProperty(trigger, 'repeats') && !isUndefined(trigger.repeats)) {
+    if (!isBoolean(trigger.repeats)) out.repeats = false;
+    out.repeats = trigger.repeats;
   }
 
   return out;

@@ -4,6 +4,7 @@ import {
   IntervalTrigger,
   TimeUnit,
   RepeatFrequency,
+  CalendarTrigger,
 } from '@notifee/react-native';
 
 type TriggersItems = {
@@ -11,6 +12,7 @@ type TriggersItems = {
   timestampWithAlarmManager: () => TimestampTrigger;
   timestampWithAlarmManagerRepeating: () => TimestampTrigger;
   interval: () => IntervalTrigger;
+  calendar: () => CalendarTrigger;
 };
 
 /* Timestamp Date */
@@ -47,5 +49,14 @@ export const triggers: TriggersItems = {
     timeUnit: TimeUnit.SECONDS,
     type: TriggerType.INTERVAL,
     interval: interval,
+  }),
+  calendar: () => ({
+    type: TriggerType.CALENDAR,
+    year: 2021,
+    month: 8,
+    day: 1,
+    hour: 12,
+    minute: 0,
+    second: 0,
   }),
 };
